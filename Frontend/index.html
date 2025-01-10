@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/problem.css">
-    <script src="app/problemSel.js"></script>
+    <script src="app/home.js"></script>
 </head>
 <body>
-    <h1>Problem Selection</h1>
-    <div class="problem-menu" id="problem-menu">    
+    <div class="project-menu">
+        <div class="recents-card">
+            <p class="recents-card-header">Acceso rápido</p>
+            <hr>
+            <p class="recents-card-body" id="recent-projects"></p>
+    </div> 
+    <div class="actions-card">
+        <button onclick="tryOutProblem('${problem.name}')">Nuevo proyecto</button>
+        <button onclick="tryOutProblem('${problem.name}')">Abrir proyecto</button>           
     </div>
 </body>
 </html>
-

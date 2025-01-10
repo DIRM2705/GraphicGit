@@ -45,7 +45,7 @@
         "resizable": false,
         "center": true,
         "height": 600,
-        "width": 800, 
+        "width": 500, 
         "url": "index.html", 
         "visible": true,  
         "fullscreen": false

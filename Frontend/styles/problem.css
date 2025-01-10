@@ -4,24 +4,32 @@
     --font-family: 'Arial', sans-serif;
 }
 
-.problem-menu
+.project-menu
 {
-    text-align:center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: row;
+    position :absolute;
+    flex-wrap: nowrap;
+    top: 50px;
+    left: 10px;
 }
 
-.problem-card
+.recents-card
 {
     border: 2px solid var(--primary-color);
-    height: 320px;
+    height: 450px;
     width: 300px;
-    display: inline-table;
+    display: inline-block;
     margin: 5px 5px;
     border-radius: 20px;
     text-align: justify;
     position: relative;
 }
 
-.problem-card .problem-header
+.recents-card-header
 {
     padding: 15px;
     padding-bottom: 0px;
@@ -30,12 +38,12 @@
     font-weight: bold;
 }
 
-.problem-card hr
+.recents-card hr
 {
     margin: 5px;
 }
 
-.problem-card .problem-body
+.recents-card-body
 {
     padding: 10px 5px;
     padding-top: 0px;
@@ -43,7 +51,15 @@
     font-size: 16px;
 }
 
-.problem-card button
+.actions-card
+{
+    display: inline-block;
+    margin: 5px 5px;
+    text-align: justify;
+    position: relative;
+}
+
+.actions-card button
 {
     margin: 10px;
     padding: 10px;
@@ -54,13 +70,12 @@
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    position: absolute;
-    bottom: 15px;
-    right: 80px;
+    display: block;
+    width : 142px;
     transition-duration: 0.25s;
 }
 
-.problem-card button:hover
+.actions-card button:hover
 {
     transform: scale(1.1);
     background-color: var(--secondary-color);
