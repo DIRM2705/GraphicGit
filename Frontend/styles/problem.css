@@ -1,0 +1,67 @@
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --font-family: 'Arial', sans-serif;
+}
+
+.problem-menu
+{
+    text-align:center;
+}
+
+.problem-card
+{
+    border: 2px solid var(--primary-color);
+    height: 320px;
+    width: 300px;
+    display: inline-table;
+    margin: 5px 5px;
+    border-radius: 20px;
+    text-align: justify;
+    position: relative;
+}
+
+.problem-card .problem-header
+{
+    padding: 15px;
+    padding-bottom: 0px;
+    margin: 0 5px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.problem-card hr
+{
+    margin: 5px;
+}
+
+.problem-card .problem-body
+{
+    padding: 10px 5px;
+    padding-top: 0px;
+    margin: 0 15px;
+    font-size: 16px;
+}
+
+.problem-card button
+{
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    bottom: 15px;
+    right: 80px;
+    transition-duration: 0.25s;
+}
+
+.problem-card button:hover
+{
+    transform: scale(1.1);
+    background-color: var(--secondary-color);
+}
