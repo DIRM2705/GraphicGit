@@ -1,0 +1,32 @@
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --font-family: 'Arial', sans-serif;
+}
+
+body
+{
+    font-family: var(--font-family);
+}
+
+.main-button
+{
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: block;
+    width : 142px;
+    transition-duration: 0.25s;
+}
+
+.main-button:hover
+{
+    transform: scale(1.1);
+    background-color: var(--secondary-color);
+}
