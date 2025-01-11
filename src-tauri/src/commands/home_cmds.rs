@@ -6,9 +6,15 @@ use tauri::{api::dialog::FileDialogBuilder, Manager};
 #[tauri::command]
 pub fn choose_directory(app_handle: AppHandle) {
     FileDialogBuilder::new().pick_folder(move |sel_path| {
+
+        //Main window
+        let window = app_handle.get_window("main").expect("Main window not found");
+
         //User selected a directory
         if sel_path.is_some() {
             let selected_path = &sel_path.unwrap();
+
+            println!("Selected path: {:?}", selected_path);
 
             //Verify permissions for the selected directory
             if !problem_path_is_valid(selected_path) {
@@ -16,13 +22,13 @@ pub fn choose_directory(app_handle: AppHandle) {
                 return;
             }
 
-            //Send a message to indicate the directory was selected
-            if let Some(window) = app_handle.get_window("main") {
-                let _ = window
-                    .emit("directory_selected", String::from(selected_path.to_str().unwrap_or_default()))
-                    .map_err(|e| log_error(&e.to_string()));
-            } else {return;}
+            let _ = window.emit("directory_selected", String::from(selected_path.to_str().unwrap_or_default()))
+            .map_err(|e| log_error(&e.to_string()));
+            return;
         }
+
+        let _ = window.emit("directory_selected", None::<String>)
+        .map_err(|e| log_error(&e.to_string()));
     });
 }
 
