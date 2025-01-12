@@ -38,7 +38,9 @@ function openProject() {
             .then((repo_already_exists) => {
                 if (repo_already_exists) {
                     //Go to project page
-                    window.location.href = "project-info.html";
+                    var dirName = event.payload.split('\\').slice(-1);
+                    console.log(dirName);
+                    window.location.href = "project-info.html?name=" + dirName;
                 }
                 else {
                     invoke("show_error", { "errorMessage": "No hay un proyecto en esta carpeta" });

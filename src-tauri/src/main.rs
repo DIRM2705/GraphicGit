@@ -15,6 +15,7 @@ fn main() {
       dialog_cmds::show_info,
       dialog_cmds::show_url_dialog,
       git_cmds::create_repo,
+      git_cmds::get_changes
     ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");

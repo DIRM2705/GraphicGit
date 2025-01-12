@@ -1,14 +1,19 @@
 use std::process::Command;
+use bincode;
+use serde::{Serialize, Deserialize};
 
+#[derive(Serialize, Deserialize)]
 pub struct Runner {
     //This is a struct that will be used to run commands
-    execution_path: String,
+    project_name : String,
+    pub execution_path: String,
 }
 
 impl Runner {
-    pub fn new(directory: &str) -> Runner {
+    pub fn new(name : &str, directory: &str) -> Runner {
         return Runner {
-            execution_path: String::from(directory),
+            project_name: String::from(name),
+            execution_path: String::from(directory)
         };
     }
 
@@ -21,5 +26,28 @@ impl Runner {
             .wait().map_err(|e| e.to_string())?;
 
         return Ok(cmd.success());
+    }
+
+    pub fn exec_with_output(&mut self, cmd: &str) -> Result<String, String> {
+        let cmd = Command::new("cmd")
+            .args(["/C", cmd])
+            .current_dir(&self.execution_path)
+            .output().map_err(|e| e.to_string())?;
+
+        return Ok(String::from_utf8_lossy(&cmd.stdout).to_string());
+    }
+
+    pub fn save_to_app_data(&self) -> Result<(), String> {
+        let path = format!("{}.ggit", self.project_name);
+        let data = bincode::serialize(&self).map_err(|e| e.to_string())?;
+        std::fs::write(path, data).map_err(|e| e.to_string())?;
+        Ok(())
+    }
+
+    pub fn load_from_app_data(name: &str) -> Result<Runner, String> {
+        let path = format!("{}.ggit", name);
+        let data = std::fs::read(path).map_err(|e| e.to_string())?;
+        let runner: Runner = bincode::deserialize(&data).map_err(|e| e.to_string())?;
+        Ok(runner)
     }
 }
