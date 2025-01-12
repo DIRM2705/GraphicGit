@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/project-info.css">
+    <link rel="stylesheet" href="styles/styles.css">
+    <script src="app/home.js"></script>
+</head>
+
+<body>
+    <form class="form">
+        <title class="title">Cambios del proyecto</title>
+        <div class="project-menu">
+            <div class="changes-container">
+                <p class="changes-header">Agregar cambios</p>
+                <div class="custom-check">
+                    <label class="checkbox__label" for="checkbox">
+                        <span class="checkbox__container">
+                            <input class="checkbox" id="checkbox" type="checkbox" />
+
+                            <span class="checkbox__label--text"> Check box. </span>
+                        </span>
+                    </label>
+                </div>
+                <div class="custom-check">
+                    <label class="checkbox__label" for="checkbox">
+                        <span class="checkbox__container">
+                            <input class="checkbox" id="checkbox" type="checkbox" />
+
+                            <span class="checkbox__label--text"> Check box. </span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="branch-card">
+                <p> Rama activa: </p>
+                <select class="branch-dropdown" id="branch-select">
+                </select>
+            </div>
+
+        </div>
+
+        <div class="commit-card">
+            <textarea placeholder="¿Qué cambios subirás?"></textarea>
+            <button class="main-button">Subir cambios</button>
+        </div>
+
+
+    </form>
+</body>
+
+</html>
