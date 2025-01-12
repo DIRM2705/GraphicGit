@@ -12,14 +12,14 @@ impl Runner {
         };
     }
 
-    pub fn exec_cmd(&mut self, cmd: &str) -> Result<(), String> {
+    pub fn exec_cmd(&mut self, cmd: &str) -> Result<bool, String> {
 
-        Command::new("cmd")
+        let cmd = Command::new("cmd")
             .args(["/C", cmd])
             .current_dir(&self.execution_path)
             .spawn().map_err(|e| e.to_string())?
             .wait().map_err(|e| e.to_string())?;
 
-        return Ok(());
+        return Ok(cmd.success());
     }
 }

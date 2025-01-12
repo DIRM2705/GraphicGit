@@ -16,12 +16,7 @@ function newProject() {
                     invoke("show_error", { "errorMessage": "Este proyecto ya fue inicializado" });
                 }
                 else {
-                    console.log(event.payload);
-                    invoke("create_repo", { "url": "", "path": event.payload }).
-                        then(() => invoke("show_info", { "title": "Nuevo proyecto", "message": "Proyecto creado exitosamente" }))
-                        .catch((error) => {
-                            invoke("show_error", { "errorMessage": error });
-                        });
+                    invoke("show_url_dialog", {"repoDir": event.payload});
                 }
             });
 

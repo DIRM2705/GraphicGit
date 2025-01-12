@@ -13,6 +13,7 @@ fn main() {
       home_cmds::validate_git_repo,
       dialog_cmds::show_error,
       dialog_cmds::show_info,
+      dialog_cmds::show_url_dialog,
       git_cmds::create_repo,
     ])
     .run(tauri::generate_context!())
