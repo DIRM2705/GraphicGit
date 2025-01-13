@@ -6,6 +6,8 @@ window.onload = function() {
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get('name');
     update_changes(name)
+    update_branches(name)
+    invoke("pull_repo", {"projectName": name})
 }
 
 function update_changes(name) {
@@ -15,9 +17,22 @@ function update_changes(name) {
             document.getElementById("changes").innerHTML += make_change_checkbox(change);
         }
     })
-    .catch((except) => {
-        console.log(name)
-        invoke("show_error", { "errorMessage": "No se encontró el proyecto" });
+    .catch((error) => {
+        invoke("show_error", { "errorMessage": error });
+    });
+}
+
+function update_branches(name) {
+    invoke("get_branches", {"projectName": name})
+    .then((branches) => {
+        for(branch of branches) {
+            select = document.getElementById("branch-select");
+            const newOption = new Option(branch, branch);
+            select.add(newOption, undefined);
+        }
+    })
+    .catch((error) => {
+        invoke("show_error", { "errorMessage": error });
     });
 }
 
