@@ -1,38 +1,43 @@
-use std::process::Command;
 use bincode;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
+use std::process::Command;
 
 #[derive(Serialize, Deserialize)]
 pub struct Runner {
     //This is a struct that will be used to run commands
-    project_name : String,
+    project_name: String,
     pub execution_path: String,
 }
 
 impl Runner {
-    pub fn new(name : &str, directory: &str) -> Runner {
+    pub fn new(name: &str, directory: &str) -> Runner {
         return Runner {
             project_name: String::from(name),
-            execution_path: String::from(directory)
+            execution_path: String::from(directory),
         };
     }
 
-    pub fn exec_cmd(&mut self, cmd: &str) -> Result<bool, String> {
-
+    pub fn exec_cmd(&mut self, cmd: &str) -> Result<(), String> {
         let cmd = Command::new("cmd")
             .args(["/c", cmd])
             .current_dir(&self.execution_path)
-            .spawn().map_err(|e| e.to_string())?
-            .wait().map_err(|e| e.to_string())?;
-
-        return Ok(cmd.success());
+            .spawn()
+            .map_err(|e| e.to_string())?
+            .wait()
+            .map_err(|e| e.to_string())?;
+        if cmd.success() {
+            return Ok(());
+        } else {
+            return Err("Ha ocurrido un error".to_string());
+        }
     }
 
     pub fn exec_with_output(&mut self, cmd: &str) -> Result<String, String> {
         let cmd = Command::new("cmd")
             .args(["/C", cmd])
             .current_dir(&self.execution_path)
-            .output().map_err(|e| e.to_string())?;
+            .output()
+            .map_err(|e| e.to_string())?;
 
         return Ok(String::from_utf8_lossy(&cmd.stdout).to_string());
     }
@@ -42,8 +47,10 @@ impl Runner {
             .args(["/C", cmd])
             .args(arg)
             .current_dir(&self.execution_path)
-            .spawn().map_err(|e| e.to_string())?
-            .wait().map_err(|e| e.to_string())?;
+            .spawn()
+            .map_err(|e| e.to_string())?
+            .wait()
+            .map_err(|e| e.to_string())?;
 
         return Ok(cmd.success());
     }

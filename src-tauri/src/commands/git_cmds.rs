@@ -22,16 +22,12 @@ pub fn create_repo(handler: AppHandle, url: String, path: String) -> Result<(), 
 
     let fetch = runner.exec_cmd("git fetch --all");
 
-    if let Ok(res) = fetch {
-        if !res {
-            runner.exec_cmd("git remote remove origin")?;
-            return Err("La URL no es válida".to_string());
-        } else {
-            if let Some(window) = handler.get_window("git-url") {
-                runner.exec_cmd("git pull origin main")?;
-                let _ = window.hide();
-            }
-        }
+    if fetch.is_err() {
+        runner.exec_cmd("git remote remove origin")?;
+        return Err("La URL no es válida".to_string());
+    } else if let Some(window) = handler.get_window("git-url") {
+        runner.exec_cmd("git pull origin main")?;
+        let _ = window.hide();
     }
 
     return Ok(());
@@ -56,7 +52,7 @@ pub fn get_branches(project_name: String) -> Result<Vec<String>, String> {
     let mut branches: Vec<String> = vec![runner.exec_with_output("git branch --show-current")?];
     let output = runner.exec_with_output("git branch -l -a")?;
     output.lines().for_each(|line| {
-        if  !(line.starts_with("  remotes") || line.starts_with("*")) {
+        if !(line.starts_with("  remotes") || line.starts_with("*")) {
             branches.push(line[2..].to_string());
         }
     });
@@ -67,15 +63,14 @@ pub fn get_branches(project_name: String) -> Result<Vec<String>, String> {
 pub fn pull_repo(project_name: String) -> Result<(), String> {
     let mut runner = Runner::load_from_app_data(&project_name)?;
     let branch = runner.exec_with_output("git branch --show-current")?;
-    if runner.exec_with_output("git fetch --all")? != ""
-    {
+    if runner.exec_with_output("git fetch --all")? != "" {
         runner.exec_cmd(format!("git pull origin {}", branch).as_str())?;
     }
     return Ok(());
 }
 
 #[tauri::command]
-pub fn commit(project_name : String, changes : Vec<String>, message : String) -> Result<(), String> {
+pub fn commit(project_name: String, changes: Vec<String>, message: String) -> Result<(), String> {
     let mut runner = Runner::load_from_app_data(&project_name)?;
 
     if changes.len() == 0 {
@@ -86,7 +81,6 @@ pub fn commit(project_name : String, changes : Vec<String>, message : String) ->
     }
 
     for mut change in changes.clone() {
-
         change = change.replace("\"", "");
 
         let status = runner.exec_with_args("git", vec!["add", change.as_str()])?;
@@ -97,7 +91,7 @@ pub fn commit(project_name : String, changes : Vec<String>, message : String) ->
             return Err(format!("No se pudo agregar el archivo {}", change));
         }
     }
-    
+
     let status = runner.exec_with_args("git", vec!["commit", "-m", message.as_str()])?;
     if status == false {
         return Err("No se pudo hacer commit".to_string());
@@ -106,12 +100,9 @@ pub fn commit(project_name : String, changes : Vec<String>, message : String) ->
 }
 
 #[tauri::command]
-pub fn push(project_name : String) -> Result<(), String> {
+pub fn push(project_name: String) -> Result<(), String> {
     let mut runner = Runner::load_from_app_data(&project_name)?;
     let branch = runner.exec_with_output("git branch --show-current")?;
     let status = runner.exec_cmd(format!("git push origin {}", branch).as_str())?;
-    if status == false {
-        return Err("No se pudo hacer push".to_string());
-    }
     return Ok(());
 }
