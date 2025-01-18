@@ -32,16 +32,6 @@
 
 /* From Uiverse.io by ozgeozkaraa01 */
 .changes-container {
-    /*display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    flex-direction: column;
-    width: 300px;
-    padding-left: 25px;
-    border-radius: 8px;
-    background-color: #f8f6f6;
-    overflow: scroll;*/
-
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -236,9 +226,51 @@
     width: calc(100% + var(--stroke-dimension));
     transition: width 1.25s 0.75s, background-color 0.5s 2s;
 }
+ 
+.refresh {
+    color: white;
+    background-color: var(--primary-color);
+    font-weight: 500;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    line-height: 2rem;
+    padding: 0.7em;
+    cursor: pointer;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    border: none;
+  }
+  
+  .refresh:hover {
+    background-color: var(--secondary-color);
+  }
+  
+  .refresh svg {
+    display: inline;
+    width: 1.3rem;
+    height: 1.3rem;
+    color: white;
+  }
+  
+  .refresh:focus svg {
+    animation: spin_357 0.5s linear;
+  }
+  
+  @keyframes spin_357 {
+    from {
+      transform: rotate(0deg);
+    }
+  
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
 
 .branch-card {
     margin: 10px;
+    text-align: center;
 }
 
 .branch-card p {

@@ -24,6 +24,13 @@ function update_changes() {
     });
 }
 
+function refresh()
+{
+    update_changes()
+    update_branches()
+    invoke("pull_repo", {"projectName": projectName})
+}
+
 function update_branches() {
     invoke("get_branches", {"projectName": projectName})
     .then((branches) => {
@@ -48,20 +55,21 @@ function push_to_repo()
         }
     });
     const message = document.getElementById("commit-message").value;
+    // Clear the commit message textarea
+    document.getElementById("commit-message").value = "";
     
     //Commit changes
     console.log("commit")
     invoke("commit", {"projectName": projectName, "changes": selectedChanges, "message": message})
     .then(() => {
         //Pull changes before push
-        console.log("pull")
         invoke("pull_repo", {"projectName": projectName})
         .then(() => {
             //Push changes
-            console.log("push")
             invoke("push", {"projectName": projectName})
             .then(() => {
-                invoke("show_info", { "message": "¡Cambios subidos con éxito!" });
+                invoke("show_info", { "title" : "Git push", "message": "¡Cambios subidos con éxito!" });
+                refresh()
             })
             .catch((error) => {
                 invoke("show_error", { "errorMessage": error });
