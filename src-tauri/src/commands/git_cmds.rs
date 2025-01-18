@@ -73,3 +73,45 @@ pub fn pull_repo(project_name: String) -> Result<(), String> {
     }
     return Ok(());
 }
+
+#[tauri::command]
+pub fn commit(project_name : String, changes : Vec<String>, message : String) -> Result<(), String> {
+    let mut runner = Runner::load_from_app_data(&project_name)?;
+
+    if changes.len() == 0 {
+        return Err("No hay cambios para hacer commit".to_string());
+    }
+    if message.trim() == "" {
+        return Err("El mensaje del commit no puede estar vacío".to_string());
+    }
+
+    for mut change in changes.clone() {
+
+        change = change.replace("\"", "");
+
+        let status = runner.exec_with_args("git", vec!["add", change.as_str()])?;
+        if status == false {
+            for change in changes {
+                runner.exec_with_args("git", vec!["rm", "--cached", change.as_str()])?;
+            }
+            return Err(format!("No se pudo agregar el archivo {}", change));
+        }
+    }
+    
+    let status = runner.exec_with_args("git", vec!["commit", "-m", message.as_str()])?;
+    if status == false {
+        return Err("No se pudo hacer commit".to_string());
+    }
+    return Ok(());
+}
+
+#[tauri::command]
+pub fn push(project_name : String) -> Result<(), String> {
+    let mut runner = Runner::load_from_app_data(&project_name)?;
+    let branch = runner.exec_with_output("git branch --show-current")?;
+    let status = runner.exec_cmd(format!("git push origin {}", branch).as_str())?;
+    if status == false {
+        return Err("No se pudo hacer push".to_string());
+    }
+    return Ok(());
+}

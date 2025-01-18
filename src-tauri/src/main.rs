@@ -18,6 +18,8 @@ fn main() {
       git_cmds::get_changes,
       git_cmds::get_branches,
       git_cmds::pull_repo,
+      git_cmds::commit,
+      git_cmds::push
     ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");

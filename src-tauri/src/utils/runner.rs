@@ -20,7 +20,7 @@ impl Runner {
     pub fn exec_cmd(&mut self, cmd: &str) -> Result<bool, String> {
 
         let cmd = Command::new("cmd")
-            .args(["/C", cmd])
+            .args(["/c", cmd])
             .current_dir(&self.execution_path)
             .spawn().map_err(|e| e.to_string())?
             .wait().map_err(|e| e.to_string())?;
@@ -35,6 +35,17 @@ impl Runner {
             .output().map_err(|e| e.to_string())?;
 
         return Ok(String::from_utf8_lossy(&cmd.stdout).to_string());
+    }
+
+    pub fn exec_with_args(&mut self, cmd: &str, arg: Vec<&str>) -> Result<bool, String> {
+        let cmd = Command::new("cmd")
+            .args(["/C", cmd])
+            .args(arg)
+            .current_dir(&self.execution_path)
+            .spawn().map_err(|e| e.to_string())?
+            .wait().map_err(|e| e.to_string())?;
+
+        return Ok(cmd.success());
     }
 
     pub fn save_to_app_data(&self) -> Result<(), String> {
