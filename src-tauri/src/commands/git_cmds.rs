@@ -103,6 +103,6 @@ pub fn commit(project_name: String, changes: Vec<String>, message: String) -> Re
 pub fn push(project_name: String) -> Result<(), String> {
     let mut runner = Runner::load_from_app_data(&project_name)?;
     let branch = runner.exec_with_output("git branch --show-current")?;
-    let status = runner.exec_cmd(format!("git push origin {}", branch).as_str())?;
+    runner.exec_cmd(format!("git push origin {}", branch).as_str())?;
     return Ok(());
 }
