@@ -55,15 +55,14 @@
         "title": "URL del repositorio",
         "minimizable": false,
         "maximizable": false,
-        "closable": false,
+        "closable": true,
         "resizable": false,
         "center": true,
         "height": 150,
         "width": 600, 
         "url": "git-url.html", 
         "visible": false,
-        "alwaysOnTop": true,
-        "decorations": false, 
+        "alwaysOnTop": true, 
         "fullscreen": false
       }
     ]

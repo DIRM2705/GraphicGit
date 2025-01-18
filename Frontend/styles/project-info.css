@@ -22,8 +22,8 @@
 
 .project-menu {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content:first baseline;
+    align-items: flex-start;
     flex-direction: row;
     width: 100%;
     height: 100%;
@@ -32,7 +32,7 @@
 
 /* From Uiverse.io by ozgeozkaraa01 */
 .changes-container {
-    display: flex;
+    /*display: flex;
     justify-content: center;
     align-items: flex-start;
     flex-direction: column;
@@ -40,6 +40,18 @@
     padding-left: 25px;
     border-radius: 8px;
     background-color: #f8f6f6;
+    overflow: scroll;*/
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #f8f6f6;
+    width: 300px;
+    height: 350px;
+    overflow: scroll;
+    padding-left: 25px;
+    border-radius: 8px;
+
 }
 
 .changes-header {
@@ -50,7 +62,6 @@
 .custom-check {
     margin: 5px 2px;
     padding: 5px 0;
-    overflow: hidden;
 }
 
 .checkbox__container {
@@ -247,21 +258,22 @@
 
 .commit-card {
     display: block;
-    width: 95%;
+    width: 80%;
     margin: 10px 0;
 }
 
 .commit-card button {
-    margin-left: 0;
+    margin-left: 25px;
 }
 
-.form textarea {
+.commit-card textarea {
     border-radius: 8px;
     height: 100px;
     width: 100%;
     resize: none;
     outline: 0;
     padding: 8px 14px;
+    margin-left: 25px;
     border: 1px solid rgb(219, 213, 213);
     display: block;
 }
