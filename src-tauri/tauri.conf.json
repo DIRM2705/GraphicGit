@@ -39,13 +39,13 @@
     "windows": [
       {
         "label": "main",
-        "title": "Home",
+        "title": "Graphic Git",
         "minimizable": true,
         "maximizable": false,
         "resizable": false,
         "center": true,
-        "height": 600,
-        "width": 500, 
+        "height": 650,
+        "width": 550, 
         "url": "index.html", 
         "visible": true,  
         "fullscreen": false
