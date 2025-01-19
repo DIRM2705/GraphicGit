@@ -49,21 +49,6 @@
         "url": "index.html", 
         "visible": true,  
         "fullscreen": false
-      },
-      {
-        "label": "git-url",
-        "title": "URL del repositorio",
-        "minimizable": false,
-        "maximizable": false,
-        "closable": true,
-        "resizable": false,
-        "center": true,
-        "height": 150,
-        "width": 600, 
-        "url": "git-url.html", 
-        "visible": false,
-        "alwaysOnTop": true, 
-        "fullscreen": false
       }
     ]
   }

@@ -19,6 +19,8 @@ fn main() {
       git_cmds::get_branches,
       git_cmds::pull_repo,
       git_cmds::commit,
+      git_cmds::new_branch,
+      git_cmds::connect_remote,
       git_cmds::push
     ])
     .run(tauri::generate_context!())

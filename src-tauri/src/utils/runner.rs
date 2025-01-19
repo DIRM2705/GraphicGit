@@ -56,14 +56,14 @@ impl Runner {
     }
 
     pub fn save_to_app_data(&self) -> Result<(), String> {
-        let path = format!("{}.ggit", self.project_name);
+        let path = format!("../{}.ggit", self.project_name);
         let data = bincode::serialize(&self).map_err(|e| e.to_string())?;
         std::fs::write(path, data).map_err(|e| e.to_string())?;
         Ok(())
     }
 
     pub fn load_from_app_data(name: &str) -> Result<Runner, String> {
-        let path = format!("{}.ggit", name);
+        let path = format!("../{}.ggit", name);
         let data = std::fs::read(path).map_err(|e| e.to_string())?;
         let runner: Runner = bincode::deserialize(&data).map_err(|e| e.to_string())?;
         Ok(runner)

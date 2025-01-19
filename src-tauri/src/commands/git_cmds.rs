@@ -3,7 +3,7 @@ use std::{path::Path, vec};
 use tauri::{AppHandle, Manager};
 
 #[tauri::command]
-pub fn create_repo(handler: AppHandle, url: String, path: String) -> Result<(), String> {
+pub async fn create_repo(path: String) -> Result<(), String> {
     let path = Path::new(&path);
 
     //Get directory name from path
@@ -18,6 +18,13 @@ pub fn create_repo(handler: AppHandle, url: String, path: String) -> Result<(), 
 
     runner.exec_cmd("git init")?;
     runner.exec_cmd("git branch -M main")?;
+
+    return Ok(());
+}
+
+#[tauri::command]
+pub async fn connect_remote(handler: AppHandle, project_name: String, url: String) -> Result<(), String> {
+    let mut runner = Runner::load_from_app_data(&project_name)?;
     runner.exec_cmd(&format!("git remote add origin {}", url))?;
 
     let fetch = runner.exec_cmd("git fetch --all");
@@ -25,16 +32,20 @@ pub fn create_repo(handler: AppHandle, url: String, path: String) -> Result<(), 
     if fetch.is_err() {
         runner.exec_cmd("git remote remove origin")?;
         return Err("La URL no es válida".to_string());
-    } else if let Some(window) = handler.get_window("git-url") {
+    } else {
         runner.exec_cmd("git pull origin main")?;
-        let _ = window.hide();
+
+        if let Some(window) = handler.get_window("git-url") {
+            window.close().map_err(|e| e.to_string())?;
+        }
+        handler.emit_all("connection-success", "").map_err(|e| e.to_string())?;
     }
 
     return Ok(());
 }
 
 #[tauri::command]
-pub fn get_changes(project_name: String) -> Result<Vec<String>, String> {
+pub async fn get_changes(project_name: String) -> Result<Vec<String>, String> {
     let mut runner = Runner::load_from_app_data(&project_name)?;
     let output = runner.exec_with_output("git status -s -uall")?;
     let mut changes: Vec<String> = Vec::new();
@@ -47,7 +58,7 @@ pub fn get_changes(project_name: String) -> Result<Vec<String>, String> {
 }
 
 #[tauri::command]
-pub fn get_branches(project_name: String) -> Result<Vec<String>, String> {
+pub async fn get_branches(project_name: String) -> Result<Vec<String>, String> {
     let mut runner = Runner::load_from_app_data(&project_name)?;
     let mut branches: Vec<String> = vec![runner.exec_with_output("git branch --show-current")?];
     let output = runner.exec_with_output("git branch -l -a")?;
@@ -60,7 +71,10 @@ pub fn get_branches(project_name: String) -> Result<Vec<String>, String> {
 }
 
 #[tauri::command]
-pub fn pull_repo(project_name: String) -> Result<(), String> {
+pub async fn new_branch(project_name: String) {}
+
+#[tauri::command]
+pub async fn pull_repo(project_name: String) -> Result<(), String> {
     let mut runner = Runner::load_from_app_data(&project_name)?;
     let branch = runner.exec_with_output("git branch --show-current")?;
     if runner.exec_with_output("git fetch --all")? != "" {
@@ -70,7 +84,7 @@ pub fn pull_repo(project_name: String) -> Result<(), String> {
 }
 
 #[tauri::command]
-pub fn commit(project_name: String, changes: Vec<String>, message: String) -> Result<(), String> {
+pub async fn commit(project_name: String, changes: Vec<String>, message: String) -> Result<(), String> {
     let mut runner = Runner::load_from_app_data(&project_name)?;
 
     if changes.len() == 0 {
@@ -100,7 +114,7 @@ pub fn commit(project_name: String, changes: Vec<String>, message: String) -> Re
 }
 
 #[tauri::command]
-pub fn push(project_name: String) -> Result<(), String> {
+pub async fn push(project_name: String) -> Result<(), String> {
     let mut runner = Runner::load_from_app_data(&project_name)?;
     let branch = runner.exec_with_output("git branch --show-current")?;
     runner.exec_cmd(format!("git push origin {}", branch).as_str())?;

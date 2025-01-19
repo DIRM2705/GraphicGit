@@ -1,6 +1,11 @@
 const { invoke } = window.__TAURI__.tauri;
 const { listen } = window.__TAURI__.event;
 
+window.onload = function () {
+    listen("connection-success", (event) => {
+        invoke("show_info", { "title": "Nuevo proyecto", "message": "Proyecto creado exitosamente" });
+    });
+}
 
 function newProject() {
     invoke("choose_directory");
@@ -16,7 +21,9 @@ function newProject() {
                     invoke("show_error", { "errorMessage": "Este proyecto ya fue inicializado" });
                 }
                 else {
-                    invoke("show_url_dialog", {"repoDir": event.payload});
+                    invoke("create_repo", {"path": event.payload})
+                    var dirName = event.payload.split('\\').slice(-1).toString();
+                    invoke("show_url_dialog", {"repoName": dirName});
                 }
             });
 
@@ -39,7 +46,6 @@ function openProject() {
                 if (repo_already_exists) {
                     //Go to project page
                     var dirName = event.payload.split('\\').slice(-1);
-                    console.log(dirName);
                     window.location.href = "project-info.html?name=" + dirName;
                 }
                 else {
