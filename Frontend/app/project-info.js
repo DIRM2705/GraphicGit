@@ -4,7 +4,6 @@ const { listen } = window.__TAURI__.event;
 var projectName = "";
 
 window.onload = function() {
-    console.log("Project info page loaded");
     //Get parameters from URL
     const urlParams = new URLSearchParams(window.location.search);
     projectName = urlParams.get('name');
@@ -40,6 +39,19 @@ function refresh()
 function add_branch()
 {
     invoke("show_new_branch_dialog", {"repoName": projectName})
+}
+
+function checkout_branch()
+{
+    const branch = document.getElementById("branch-select").value;
+    invoke("checkout_branch", {"projectName": projectName, "branchName": branch})
+    .then(() => {
+        invoke("show_info", { "title" : "Cambio de rama", "message": "¡Rama cambiada con éxito!" });
+        refresh()
+    })
+    .catch((error) => {
+        invoke("show_error", { "errorMessage": error });
+    });
 }
 
 function update_branches() {

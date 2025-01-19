@@ -21,6 +21,7 @@ fn main() {
       git_cmds::pull_repo,
       git_cmds::commit,
       git_cmds::new_branch,
+      git_cmds::checkout_branch,
       git_cmds::connect_remote,
       git_cmds::push
     ])

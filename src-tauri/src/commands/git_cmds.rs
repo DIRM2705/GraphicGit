@@ -86,6 +86,13 @@ pub async fn new_branch(handler : AppHandle, project_name: String, branch_name :
 }
 
 #[tauri::command]
+pub async fn checkout_branch(project_name: String, branch_name: String) -> Result<(), String> {
+    let mut runner = Runner::load_from_app_data(&project_name)?;
+    runner.exec_with_args("git", vec!["checkout", &branch_name])?;
+    return Ok(());
+}
+
+#[tauri::command]
 pub async fn pull_repo(project_name: String) -> Result<(), String> {
     let mut runner = Runner::load_from_app_data(&project_name)?;
     let branch = runner.exec_with_output("git branch --show-current")?;
