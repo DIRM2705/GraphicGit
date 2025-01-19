@@ -74,6 +74,8 @@ pub async fn get_branches(project_name: String) -> Result<Vec<String>, String> {
 pub async fn new_branch(handler : AppHandle, project_name: String, branch_name : String) -> Result<(), String>
 {
     let mut runner = Runner::load_from_app_data(&project_name).unwrap();
+
+    let branch_name = branch_name.replace(" ", "-");
     runner.exec_with_args("git", vec!["checkout", "-b", &branch_name])?;
 
     if let Some(window) = handler.get_window("new-branch") {
