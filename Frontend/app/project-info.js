@@ -7,9 +7,12 @@ window.onload = function() {
     //Get parameters from URL
     const urlParams = new URLSearchParams(window.location.search);
     projectName = urlParams.get('name');
-    update_changes()
-    update_branches()
-    invoke("pull_repo", {"projectName": projectName})
+    refresh()
+
+    listen("add-branch", (changes) => {
+        invoke("show_info", { "title" : "Nueva rama", "message": "¡Rama creada con éxito!" });
+        refresh()
+    });
 }
 
 function update_changes() {
@@ -29,6 +32,11 @@ function refresh()
     update_changes()
     update_branches()
     invoke("pull_repo", {"projectName": projectName})
+}
+
+function add_branch()
+{
+    invoke("show_new_branch_dialog", {"repoName": projectName})
 }
 
 function update_branches() {

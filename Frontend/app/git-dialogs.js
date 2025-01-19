@@ -16,9 +16,21 @@ function sendURL() {
     invoke("connect_remote", { "url": url, "projectName": repo_name }).
         then(() => 
             {
-                invoke("show_info", { "title": "Nuevo proyecto", "message": "Proyecto creado exitosamente" });
         })
         .catch((error) => {
             invoke("show_error", { "errorMessage": error });
         });
+}
+
+function sendBranchName()
+{
+    //Get name parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const repo_name = urlParams.get('name');
+    invoke("new_branch", {"projectName" : repo_name, "branchName" : document.getElementById("branch-name").value})
+    .then(() => {
+    })
+    .catch((error) => {
+        invoke("show_error", { "errorMessage": error });
+    });
 }

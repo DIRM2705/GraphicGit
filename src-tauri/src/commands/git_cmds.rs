@@ -71,7 +71,19 @@ pub async fn get_branches(project_name: String) -> Result<Vec<String>, String> {
 }
 
 #[tauri::command]
-pub async fn new_branch(project_name: String) {}
+pub async fn new_branch(handler : AppHandle, project_name: String, branch_name : String) -> Result<(), String>
+{
+    let mut runner = Runner::load_from_app_data(&project_name).unwrap();
+    runner.exec_with_args("git", vec!["checkout", "-b", &branch_name])?;
+
+    if let Some(window) = handler.get_window("new-branch") {
+        window.close().map_err(|e| e.to_string())?;
+    }
+
+    handler.emit_all("add-branch","").map_err(|e| e.to_string())?;
+
+    return Ok(());
+}
 
 #[tauri::command]
 pub async fn pull_repo(project_name: String) -> Result<(), String> {

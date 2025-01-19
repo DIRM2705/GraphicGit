@@ -46,6 +46,42 @@ pub async fn show_url_dialog(handler : AppHandle, repo_name : String) -> Result<
 }
 
 #[tauri::command]
+pub async fn show_new_branch_dialog(handler : AppHandle, repo_name : String) -> Result<(), String>
+{
+    let url_window = tauri::WindowBuilder::new(
+        &handler,
+        "new-branch",
+        tauri::WindowUrl::App(format!("new-branch.html?name={}", repo_name).into()),
+    )
+    .build().unwrap();
+
+    url_window.set_title("Nueva rama").map_err(|e| e.to_string())?;
+
+    url_window
+        .set_minimizable(false)
+        .map_err(|e| e.to_string())?;
+    url_window
+        .set_maximizable(false)
+        .map_err(|e| e.to_string())?;
+    url_window.set_resizable(false).map_err(|e| e.to_string())?;
+    url_window.center().map_err(|e| e.to_string())?;
+    url_window
+        .set_size(tauri::Size::Logical(tauri::LogicalSize {
+            width: 600.0,
+            height: 150.0,
+        }))
+        .map_err(|e| e.to_string())?;
+    url_window
+        .set_always_on_top(true)
+        .map_err(|e| e.to_string())?;
+
+    url_window.show().map_err(|e| e.to_string())?;
+    
+
+    return Ok(());
+}
+
+#[tauri::command]
 pub fn show_info(handler : AppHandle, title :String, message : String)
 {
     dialog::message(handler.get_focused_window().as_ref(), title, message);
