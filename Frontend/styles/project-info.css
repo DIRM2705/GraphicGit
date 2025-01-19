@@ -236,14 +236,17 @@
     color: white;
     background-color: var(--primary-color);
     font-weight: 500;
-    border-radius: calc(45px/2);
+    border-radius: calc(40px / 2);
+    height: 40px;
+    width: 40px;
     font-size: 1rem;
     line-height: 2rem;
     cursor: pointer;
-    text-align: center;
-    display: inline;
+    display: inline-flex;
     border: none;
     margin: 2px;
+    align-items: center;
+    justify-content: center;
 }
 
 .refresh:hover {
@@ -251,7 +254,7 @@
 }
 
 .refresh svg {
-    display: inline;
+    display: inline-flex;
     width: 1.3rem;
     height: 1.3rem;
     color: white;
@@ -277,15 +280,14 @@
     display: inline-flex;
     align-items: center;
     justify-content: flex-start;
-    width: 45px;
-    height: 45px;
-    border-radius: calc(45px/2);
+    width: 40px;
+    height: 40px;
+    border-radius: calc(40px/2);
     border: none;
     cursor: pointer;
     position: relative;
     overflow: hidden;
     transition-duration: .3s;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
     background: var(--primary-color);
 }
 
