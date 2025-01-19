@@ -16,6 +16,7 @@ fn main() {
       dialog_cmds::show_url_dialog,
       dialog_cmds::show_new_branch_dialog,
       dialog_cmds::show_loading,
+      dialog_cmds::close_loading,
       git_cmds::create_repo,
       git_cmds::get_changes,
       git_cmds::get_branches,

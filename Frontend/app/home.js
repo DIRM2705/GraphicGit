@@ -1,13 +1,21 @@
 const { invoke } = window.__TAURI__.tauri;
 const { listen } = window.__TAURI__.event;
 
+var newProjectButton = null;
+var openProjectButton = null;
+
 window.onload = function () {
     listen("connection-success", (event) => {
+        invoke("close_loading");
         invoke("show_info", { "title": "Nuevo proyecto", "message": "Proyecto creado exitosamente" });
     });
+
+    newProjectButton = document.getElementById("newProject");
+    openProjectButton = document.getElementById("openProject");
 }
 
 function newProject() {
+    toggle_buttons();
     invoke("choose_directory");
     const eventlistener = listen('directory_selected', (event) => {
         if (event.payload == null) {
@@ -27,13 +35,13 @@ function newProject() {
                 }
             });
 
-
-
+        toggle_buttons();
         eventlistener.then(f => f());
     });
 }
 
 function openProject() {
+    toggle_buttons();
     invoke("choose_directory");
     const eventlistener = listen('directory_selected', (event) => {
         if (event.payload == null) {
@@ -50,9 +58,16 @@ function openProject() {
                 }
                 else {
                     invoke("show_error", { "errorMessage": "No hay un proyecto en esta carpeta" });
+                    toggle_buttons();
                 }
             });
 
         eventlistener.then(f => f());
     });
+}
+
+function toggle_buttons()
+{
+    newProjectButton.disabled = !newProjectButton.disabled;
+    openProjectButton.disabled = !openProjectButton.disabled;
 }
