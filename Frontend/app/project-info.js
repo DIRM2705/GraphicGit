@@ -4,6 +4,7 @@ const { listen } = window.__TAURI__.event;
 var projectName = "";
 
 window.onload = function() {
+    console.log("Project info page loaded");
     //Get parameters from URL
     const urlParams = new URLSearchParams(window.location.search);
     projectName = urlParams.get('name');
@@ -16,10 +17,12 @@ window.onload = function() {
 }
 
 function update_changes() {
+    changePanel = document.getElementById("changes")
+    changePanel.innerHTML = "<p class=\"changes-header\">Agregar cambios</p>";
     invoke("get_changes", {"projectName": projectName})
     .then((changes) => {
         for(change of changes) {
-            document.getElementById("changes").innerHTML += make_change_checkbox(change);
+            changePanel.innerHTML += make_change_checkbox(change);
         }
     })
     .catch((error) => {
@@ -40,10 +43,11 @@ function add_branch()
 }
 
 function update_branches() {
+    select = document.getElementById("branch-select");
+    select.length = 0;
     invoke("get_branches", {"projectName": projectName})
     .then((branches) => {
         for(branch of branches) {
-            select = document.getElementById("branch-select");
             const newOption = new Option(branch, branch);
             select.add(newOption, undefined);
         }
