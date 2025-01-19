@@ -86,3 +86,28 @@ pub fn show_info(handler : AppHandle, title :String, message : String)
 {
     dialog::message(handler.get_focused_window().as_ref(), title, message);
 }
+
+#[tauri::command]
+pub fn show_loading(handler : AppHandle) -> Result<(), String>
+{
+    let loading_window = tauri::WindowBuilder::new(
+        &handler,
+        "loading",
+        tauri::WindowUrl::App("loading.html".into()),
+    ).build().map_err(|e| e.to_string())?;
+
+    loading_window.set_title("Cargando").map_err(|e| e.to_string())?;
+    loading_window.set_minimizable(false).map_err(|e| e.to_string())?;
+    loading_window.set_maximizable(false).map_err(|e| e.to_string())?;
+    loading_window.set_resizable(false).map_err(|e| e.to_string())?;
+    loading_window.center().map_err(|e| e.to_string())?;
+    loading_window.set_size(tauri::Size::Logical(tauri::LogicalSize {
+        width: 0.150,
+        height: 150.0,
+    })).map_err(|e| e.to_string())?;
+    loading_window.set_always_on_top(true).map_err(|e| e.to_string())?;
+    loading_window.set_focus().map_err(|e| e.to_string())?;
+
+    loading_window.show().map_err(|e| e.to_string())?;
+    Ok(())
+}
