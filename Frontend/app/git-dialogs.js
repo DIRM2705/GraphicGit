@@ -16,7 +16,7 @@ function sendURL() {
     const urlParams = new URLSearchParams(window.location.search);
     const repo_name = urlParams.get('name');
 
-    invoke("connect_remote", { "url": url, "projectName": repo_name }).
+    invoke("connect_remote", { "url": url}).
         then(() => 
             {
         })
@@ -32,7 +32,7 @@ function sendBranchName()
     //Get name parameter
     const urlParams = new URLSearchParams(window.location.search);
     const repo_name = urlParams.get('name');
-    invoke("new_branch", {"projectName" : repo_name, "branchName" : document.getElementById("branch-name").value})
+    invoke("new_branch", {"branchName" : document.getElementById("branch-name").value})
     .then(() => {
     })
     .catch((error) => {

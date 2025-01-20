@@ -30,15 +30,14 @@ function newProject() {
             return;
         };
 
-        invoke("validate_git_repo", { "repoPath": event.payload })
+        invoke("validate_git_repo")
             .then((repo_already_exists) => {
                 if (repo_already_exists) {
                     invoke("show_error", { "errorMessage": "Este proyecto ya fue inicializado" });
                 }
                 else {
-                    invoke("create_repo", {"path": event.payload})
-                    var dirName = event.payload.split('\\').slice(-1).toString();
-                    invoke("show_url_dialog", {"repoName": dirName});
+                    invoke("create_repo")
+                    invoke("show_url_dialog");
                 }
             });
 
@@ -56,13 +55,12 @@ function openProject() {
             return;
         };
 
-        invoke("validate_git_repo", { "repoPath": event.payload })
+        invoke("validate_git_repo")
             .then((repo_already_exists) => {
                 if (repo_already_exists) {
                     //Go to project page
-                    var dirName = event.payload.split('\\').slice(-1);
-                    invoke("add_to_recents_file", { "path": event.payload });
-                    window.location.href = "project-info.html?name=" + dirName;
+                    //invoke("add_to_recents_file");
+                    window.location.href = "project-info.html";
                 }
                 else {
                     invoke("show_error", { "errorMessage": "No hay un proyecto en esta carpeta" });

@@ -19,7 +19,7 @@ window.onload = function () {
 function update_changes() {
     changePanel = document.getElementById("changes")
     changePanel.innerHTML = "<p class=\"changes-header\">Agregar cambios</p>";
-    invoke("get_changes", { "projectName": projectName })
+    invoke("get_changes")
         .then((changes) => {
             for (change of changes) {
                 changePanel.innerHTML += make_change_checkbox(change);
@@ -34,19 +34,19 @@ function refresh() {
     invoke("show_loading");
     update_changes()
     update_branches()
-    invoke("pull_repo", { "projectName": projectName })
+    invoke("pull_repo")
         .then(() => {
             invoke("close_loading");
         });
 }
 
 function add_branch() {
-    invoke("show_new_branch_dialog", { "repoName": projectName })
+    invoke("show_new_branch_dialog")
 }
 
 function checkout_branch() {
     const branch = document.getElementById("branch-select").value;
-    invoke("checkout_branch", { "projectName": projectName, "branchName": branch })
+    invoke("checkout_branch", {"branchName": branch })
         .then(() => {
             refresh()
             invoke("show_info", { "title": "Cambio de rama", "message": "¡Rama cambiada con éxito!" });
@@ -59,7 +59,7 @@ function checkout_branch() {
 function update_branches() {
     select = document.getElementById("branch-select");
     select.length = 0;
-    invoke("get_branches", { "projectName": projectName })
+    invoke("get_branches")
         .then((branches) => {
             for (branch of branches) {
                 const newOption = new Option(branch, branch);
@@ -86,13 +86,13 @@ function push_to_repo() {
 
     //Commit changes
     console.log("commit")
-    invoke("commit", { "projectName": projectName, "changes": selectedChanges, "message": message })
+    invoke("commit", {"changes": selectedChanges, "message": message })
         .then(() => {
             //Pull changes before push
-            invoke("pull_repo", { "projectName": projectName })
+            invoke("pull_repo")
                 .then(() => {
                     //Push changes
-                    invoke("push", { "projectName": projectName })
+                    invoke("push")
                         .then(() => {
                             invoke("close_loading");
                             invoke("show_info", { "title": "Git push", "message": "¡Cambios subidos con éxito!" });

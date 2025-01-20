@@ -10,12 +10,12 @@ pub fn show_error(handler : AppHandle, error_message : String)
 }
 
 #[tauri::command]
-pub async fn show_url_dialog(handler : AppHandle, repo_name : String) -> Result<(), String>
+pub async fn show_url_dialog(handler : AppHandle) -> Result<(), String>
 {
     let url_window = tauri::WindowBuilder::new(
         &handler,
         "git-url",
-        tauri::WindowUrl::App(format!("git-url.html?name={}", repo_name).into()),
+        tauri::WindowUrl::App(format!("git-url.html").into()),
     )
     .title("Git URL")
     .minimizable(false)
@@ -42,12 +42,12 @@ pub async fn show_url_dialog(handler : AppHandle, repo_name : String) -> Result<
 }
 
 #[tauri::command]
-pub async fn show_new_branch_dialog(handler : AppHandle, repo_name : String) -> Result<(), String>
+pub async fn show_new_branch_dialog(handler : AppHandle) -> Result<(), String>
 {
     let branch_window = tauri::WindowBuilder::new(
         &handler,
         "new-branch",
-        tauri::WindowUrl::App(format!("new-branch.html?name={}", repo_name).into()),
+        tauri::WindowUrl::App(format!("new-branch.html").into()),
     )
     .title("Nueva rama")
     .minimizable(false)
