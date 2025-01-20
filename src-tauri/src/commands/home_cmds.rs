@@ -1,5 +1,5 @@
 use crate::utils::runner::Runner;
-use crate::utils::{log::log_error, validation::problem_path_is_valid, recents::RecentFiles};
+use crate::utils::{log::log_error, recents::RecentFiles, validation::problem_path_is_valid};
 use crate::RunnerWrapper;
 use std::path::PathBuf;
 use std::sync::Mutex;
@@ -25,16 +25,17 @@ pub fn choose_directory(app_handle: AppHandle) {
             }
 
             println!("Selected path: {:?}", selected_path);
-            
-            if let Some(state) = app_handle.try_state::<RunnerWrapper>()
-            {
-                state.0.lock().unwrap().set_execution_path(selected_path.to_str().unwrap_or_default());
-            }
-            else {
+
+            if let Some(state) = app_handle.try_state::<RunnerWrapper>() {
+                state
+                    .0
+                    .lock()
+                    .unwrap()
+                    .set_execution_path(selected_path.to_str().unwrap_or_default());
+            } else {
                 let runner = Runner::new(selected_path.to_str().unwrap_or_default());
                 app_handle.manage(RunnerWrapper(Mutex::new(runner)));
             }
-
 
             let _ = window
                 .emit(
@@ -49,6 +50,20 @@ pub fn choose_directory(app_handle: AppHandle) {
             .emit("directory_selected", None::<String>)
             .map_err(|e| log_error(&e.to_string()));
     });
+}
+
+#[tauri::command]
+pub fn set_current_project(app_handle: AppHandle, dir : String) {
+    if let Some(state) = app_handle.try_state::<RunnerWrapper>() {
+        state
+            .0
+            .lock()
+            .unwrap()
+            .set_execution_path(&dir);
+    } else {
+        let runner = Runner::new(&dir);
+        app_handle.manage(RunnerWrapper(Mutex::new(runner)));
+    }
 }
 
 #[tauri::command]

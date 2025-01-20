@@ -55,6 +55,16 @@
     word-wrap: break-word;
 }
 
+.recent-file
+{
+    cursor: pointer;
+}
+
+.recent-file:hover
+{
+    color: var(--primary-color);
+}
+
 .actions-card
 {
     display: inline-block;

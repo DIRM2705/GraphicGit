@@ -15,8 +15,10 @@ window.onload = function () {
     recentsPanel = document.getElementById("recent-projects");
     recents = invoke("get_recents");
     recents.then((recents) => {
+        var index = 0;
         recents.forEach((element) => {
-            recentsPanel.innerHTML += `<p>${element}</p>`;
+            recentsPanel.innerHTML += `<p class="recent-file" onclick=\"openRecent(${index})\">${element}</p>`;
+            index++;
         });
     });
 }
@@ -70,6 +72,26 @@ function openProject() {
 
         eventlistener.then(f => f());
     });
+}
+
+function openRecent(index)
+{
+    const dir = document.getElementById("recent-projects").children[index].innerText;
+    console.log(dir);
+    invoke("set_current_project", { "dir": dir });
+
+    invoke("validate_git_repo")
+            .then((repo_already_exists) => {
+                if (repo_already_exists) {
+                    //Go to project page
+                    invoke("add_to_recents_file");
+                    window.location.href = "project-info.html";
+                }
+                else {
+                    invoke("show_error", { "errorMessage": "No hay un proyecto en esta carpeta" });
+                    toggle_buttons();
+                }
+            });
 }
 
 function toggle_buttons()

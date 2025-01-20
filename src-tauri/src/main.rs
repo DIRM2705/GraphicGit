@@ -13,6 +13,7 @@ fn main() {
       home_cmds::validate_git_repo,
       home_cmds::get_recents,
       home_cmds::add_to_recents_file,
+      home_cmds::set_current_project,
       dialog_cmds::show_error,
       dialog_cmds::show_info,
       dialog_cmds::show_url_dialog,
