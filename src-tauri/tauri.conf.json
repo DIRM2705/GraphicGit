@@ -5,8 +5,8 @@
     "withGlobalTauri": true
   },
   "package": {
-    "productName": "BaueLogika",
-    "version": "0.0.1"
+    "productName": "Grafic Git",
+    "version": "1.0.0"
   },
   "tauri": {
     "allowlist": {
