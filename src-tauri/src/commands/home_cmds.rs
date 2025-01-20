@@ -1,5 +1,5 @@
 use crate::utils::runner::Runner;
-use crate::utils::{log::log_error, validation::problem_path_is_valid};
+use crate::utils::{log::log_error, validation::problem_path_is_valid, recents::RecentFiles};
 use crate::RunnerWrapper;
 use std::path::PathBuf;
 use std::sync::Mutex;
@@ -61,20 +61,15 @@ pub fn validate_git_repo(state: State<RunnerWrapper>) -> bool {
 
 #[tauri::command]
 pub fn get_recents() -> Vec<String> {
-    //Read recents file
-    let recents_file = PathBuf::from("recents.txt");
-    let recents = std::fs::read_to_string(&recents_file).unwrap_or_default();
-    //Make each line a separate string
-    let lines = recents.lines().collect::<Vec<&str>>();
-    return lines.iter().map(|s| s.to_string()).collect();
+    let recents = RecentFiles::read_from_file();
+    let mut files = recents.get_recent_files().clone();
+    files.reverse();
+    return files;
 }
 
 #[tauri::command]
 pub fn add_to_recents_file(state: State<RunnerWrapper>) {
     let repo_path = state.0.lock().unwrap().get_execution_path().clone();
-    //Add path to recents file
-    let recents_file = PathBuf::from("recents.txt");
-    let mut recents = std::fs::read_to_string(&recents_file).unwrap_or_default();
-    recents = format!("{}\n{}", repo_path, recents);
-    std::fs::write(&recents_file, recents).unwrap();
+    let mut recents = RecentFiles::read_from_file();
+    recents.add(repo_path);
 }

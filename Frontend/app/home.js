@@ -59,7 +59,7 @@ function openProject() {
             .then((repo_already_exists) => {
                 if (repo_already_exists) {
                     //Go to project page
-                    //invoke("add_to_recents_file");
+                    invoke("add_to_recents_file");
                     window.location.href = "project-info.html";
                 }
                 else {
