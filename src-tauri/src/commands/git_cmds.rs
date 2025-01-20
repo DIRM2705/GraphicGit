@@ -1,5 +1,4 @@
-use crate::utils::runner::Runner;
-use std::{path::Path, vec};
+use std::vec;
 use tauri::{AppHandle, Manager, State};
 
 use crate::RunnerWrapper;

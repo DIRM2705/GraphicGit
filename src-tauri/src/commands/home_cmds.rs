@@ -1,4 +1,4 @@
-use crate::utils::runner::{self, Runner};
+use crate::utils::runner::Runner;
 use crate::utils::{log::log_error, validation::problem_path_is_valid};
 use crate::RunnerWrapper;
 use std::path::PathBuf;
