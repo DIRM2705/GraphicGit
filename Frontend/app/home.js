@@ -12,6 +12,13 @@ window.onload = function () {
 
     newProjectButton = document.getElementById("newProject");
     openProjectButton = document.getElementById("openProject");
+    recentsPanel = document.getElementById("recent-projects");
+    recents = invoke("get_recents");
+    recents.then((recents) => {
+        recents.forEach((element) => {
+            recentsPanel.innerHTML += `<p>${element}</p>`;
+        });
+    });
 }
 
 function newProject() {
@@ -54,6 +61,7 @@ function openProject() {
                 if (repo_already_exists) {
                     //Go to project page
                     var dirName = event.payload.split('\\').slice(-1);
+                    invoke("add_to_recents_file", { "path": event.payload });
                     window.location.href = "project-info.html?name=" + dirName;
                 }
                 else {

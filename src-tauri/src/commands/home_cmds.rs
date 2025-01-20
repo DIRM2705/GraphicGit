@@ -38,3 +38,22 @@ pub fn validate_git_repo(repo_path: String) -> bool {
     //Validate git repo
     return problem_path_is_valid(&full_path);
 }
+
+#[tauri::command]
+pub fn get_recents() -> Vec<String> {
+    //Read recents file
+    let recents_file = PathBuf::from("recents.txt");
+    let recents = std::fs::read_to_string(&recents_file).unwrap_or_default();
+    //Make each line a separate string
+    let lines = recents.lines().collect::<Vec<&str>>();
+    return lines.iter().map(|s| s.to_string()).collect();
+}
+
+#[tauri::command]
+pub fn add_to_recents_file(path: String) {
+    //Add path to recents file
+    let recents_file = PathBuf::from("recents.txt");
+    let mut recents = std::fs::read_to_string(&recents_file).unwrap_or_default();
+    recents = format!("{}\n{}", path, recents);
+    std::fs::write(&recents_file, recents).unwrap();
+}
