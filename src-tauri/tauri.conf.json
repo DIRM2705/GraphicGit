@@ -13,15 +13,11 @@
       "all": false,
       "dialog": {
         "open": true
-      },
-      "shell": {
-        "all": false,
-        "open": true
       }
     },
     "bundle": {
       "active": true,
-      "copyright": "2024",
+      "copyright": "2025",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -29,7 +25,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.prehilabs.bauelogika",
+      "identifier": "com.prehilabs.graphicgit",
       "publisher": "PrehiLabs",
       "targets": "msi"
       },

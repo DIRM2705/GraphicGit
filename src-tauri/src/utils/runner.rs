@@ -1,5 +1,8 @@
 
 use std::process::Command;
+use std::os::windows::process::CommandExt;
+
+const CREATE_NO_WINDOW: u32 = 0x08000000;
 
 #[derive(Clone)]
 pub struct Runner {
@@ -24,6 +27,7 @@ impl Runner {
     pub fn exec_cmd(&mut self, cmd: &str) -> Result<(), String> {
         let cmd = Command::new("cmd")
             .args(["/c", cmd])
+            .creation_flags(CREATE_NO_WINDOW)
             .current_dir(&self.execution_path)
             .spawn()
             .map_err(|e| e.to_string())?
@@ -39,6 +43,7 @@ impl Runner {
     pub fn exec_with_output(&mut self, cmd: &str) -> Result<String, String> {
         let cmd = Command::new("cmd")
             .args(["/C", cmd])
+            .creation_flags(CREATE_NO_WINDOW)
             .current_dir(&self.execution_path)
             .output()
             .map_err(|e| e.to_string())?;
@@ -49,6 +54,7 @@ impl Runner {
     pub fn exec_with_args(&mut self, cmd: &str, arg: Vec<&str>) -> Result<bool, String> {
         let cmd = Command::new("cmd")
             .args(["/C", cmd])
+            .creation_flags(CREATE_NO_WINDOW)
             .args(arg)
             .current_dir(&self.execution_path)
             .spawn()
