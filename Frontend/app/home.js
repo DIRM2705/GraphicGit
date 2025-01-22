@@ -40,9 +40,7 @@ function newProject() {
                     invoke("create_repo")
                     invoke("show_url_dialog");
                 }
-            });
-
-        toggle_buttons();
+            });    
         eventlistener.then(f => f());
     });
 }
@@ -64,7 +62,7 @@ function openProject() {
                 }
                 else {
                     invoke("show_error", { "errorMessage": "No hay un proyecto en esta carpeta" });
-                    toggle_buttons();
+                    
                 }
             });
 
@@ -87,7 +85,7 @@ function openRecent(index)
                 }
                 else {
                     invoke("show_error", { "errorMessage": "No hay un proyecto en esta carpeta" });
-                    toggle_buttons();
+                    
                 }
             });
 }
