@@ -24,7 +24,6 @@ window.onload = function () {
 }
 
 function newProject() {
-    toggle_buttons();
     invoke("choose_directory");
     const eventlistener = listen('directory_selected', (event) => {
         if (event.payload == null) {
@@ -49,7 +48,6 @@ function newProject() {
 }
 
 function openProject() {
-    toggle_buttons();
     invoke("choose_directory");
     const eventlistener = listen('directory_selected', (event) => {
         if (event.payload == null) {
